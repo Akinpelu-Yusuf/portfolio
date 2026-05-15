@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aging in America — Yusuf Akinpelu</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+--ink:#111;
+--paper:#efe4d3;
+--gold:#c8931f;
+--accent:#5a3935;
+--rule:rgba(0,0,0,0.12);
+--serif:'Playfair Display',serif;
+--sans:'DM Sans',sans-serif;
+--mono:'DM Mono',monospace;
+}
+
+body{
+background:var(--paper);
+font-family:var(--serif);
+color:var(--ink);
+line-height:1.6;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:4rem 2rem;
+}
+
+.hero{
+margin-bottom:4rem;
+}
+
+.hero h1{
+font-family:var(--serif);
+font-size:clamp(3rem,8vw,6rem);
+line-height:0.95;
+margin-bottom:1rem;
+}
+
+.hero p{
+max-width:700px;
+opacity:0.7;
+font-size:1.1rem;
+}
+
+.section-title{
+font-family:var(--serif);
+font-size:2.2rem;
+margin-bottom:2rem;
+margin-top:4rem;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:1.5rem;
+}
+
+.card{
+background:white;
+padding:2rem;
+border:1px solid var(--rule);
+transition:0.3s ease;
+text-decoration:none;
+color:var(--ink);
+display:block;
+position:relative;
+overflow:hidden;
+}
+
+.card:hover{
+transform:translateY(-6px);
+background:var(--ink);
+color:white;
+}
+
+.card:hover .year{
+color:var(--gold);
+}
+
+.year{
+font-family:var(--mono);
+font-size:0.8rem;
+letter-spacing:0.1em;
+text-transform:uppercase;
+margin-bottom:1rem;
+color:var(--accent);
+transition:0.3s;
+}
+
+.card h3{
+font-size:1.2rem;
+font-weight:500;
+}
+
+.back{
+display:inline-block;
+margin-top:3rem;
+padding:1rem 1.5rem;
+background:#111;
+color:#fff;
+text-decoration:none;
+font-family:var(--mono);
+border-radius:999px;
+font-size:0.75rem;
+text-transform:uppercase;
+}
+
+.back:hover{
+background:var(--accent);
+color: var(--paper);
+transform: translateY(-3px);
+box-shadow: 0 10px 24px rgba(20, 106, 172, 0.771);
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<div class="container">
+
+<h1 class="hero-name">Aging in America</h1>
+
+
+<div class="grid">
+
+</div>
+
+<div style="text-align:center;margin-top:4rem;">
+<a href="https://journalism.berkeley.edu/why-berkeley/our-work/irp/aging-in-america/"
+target="_blank"
+style="
+display:inline-block;
+padding:1rem 2rem;
+background:#111;
+color:white;
+text-decoration:none;
+border-radius:999px;
+font-family:'DM Mono',monospace;
+letter-spacing:0.1em;
+text-transform:uppercase;
+font-size:0.75rem;
+">
+View other stories here
+</a>
+</div>
+
+<a href="index.html" class="back">← Back Home</a>
+
+</div>
+<script src="nav.js"></script>
+</body>
+</html>

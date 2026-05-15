@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Premium Times — Yusuf Akinpelu</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--serif:'Playfair Display', serif;
+--mono:'DM Mono', monospace;
+--sans:'DM Sans', sans-serif;
+--paper:#e8dece;
+--ink:#0f0e0c;
+--rule:rgba(15,14,12,0.15);
+--accent:#5a3935;
+}
+
+body{
+margin:0;
+background:#e8dece;
+font-family:var(--sans);
+color:#111;
+}
+
+/* ── SHARED NAV STYLES ── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(229,209,177,0.97);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--rule);
+  padding: 0 2rem;
+}
+.nav-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 52px;
+}
+.nav a {
+  font-family: var(--mono); font-size: 0.75rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--ink); text-decoration: none;
+}
+.nav ul {
+  display: flex; list-style: none; position: relative;
+  font-family: var(--mono); font-size: 0.72rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin: 0; padding: 0;
+}
+.nav ul > li { position: relative; }
+.nav ul a {
+  color: var(--ink); text-decoration: none; opacity: 0.6;
+  transition: opacity 0.2s; padding: 0 0.9rem;
+  display: block; line-height: 52px;
+}
+.nav ul a:hover { opacity: 1; }
+.nav ul ul {
+  display: none; position: absolute; top: 52px; left: 50%;
+  transform: translateX(-50%);
+  background: rgba(229,209,177,0.99); backdrop-filter: blur(14px);
+  border: 1px solid var(--rule); min-width: 195px;
+  list-style: none; padding: 0.4rem 0; z-index: 300;
+  flex-direction: column;
+}
+.nav ul li:hover > ul { display: flex; }
+.nav ul ul a { line-height: 1; padding: 0.75rem 1.25rem; opacity: 0.65; font-size: 0.7rem; }
+.nav ul ul a:hover { opacity: 1; background: rgba(0,0,0,0.05); }
+.top-rule { max-width: 1200px; margin: 0 auto; border: none; border-top: 3px solid var(--ink); }
+/* ── END SHARED NAV STYLES ── */
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:4rem 2rem;
+}
+
+.hero-name{
+font-family:var(--serif);
+font-size:clamp(3rem,8vw,6rem);
+line-height:0.95;
+margin-bottom:1rem;
+}
+
+.hero-name em{
+font-style:italic;
+font-weight:400;
+}
+
+p{
+max-width:60ch;
+line-height:1.7;
+opacity:0.75;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:2rem;
+margin-top:3rem;
+}
+
+.card{
+background:#f6edde;
+text-decoration:none;
+color:#111;
+overflow:hidden;
+transition:0.3s;
+border:1px solid rgba(0,0,0,0.1);
+}
+
+.card:hover{
+transform:translateY(-6px);
+box-shadow:0 16px 30px rgba(0,0,0,0.12);
+}
+
+.card img{
+width:100%;
+height:230px;
+object-fit:cover;
+display:block;
+}
+
+.content{
+padding:1.5rem;
+}
+
+.content h3{
+font-size:1.25rem;
+line-height:1.3;
+margin:0;
+font-family:var(--serif);
+}
+
+.button-wrap{
+margin-top:4rem;
+}
+
+.more-btn{
+display:inline-block;
+padding:1rem 1.8rem;
+background:#111;
+color:#fff;
+text-decoration:none;
+border-radius:999px;
+letter-spacing:0.1em;
+text-transform:uppercase;
+font-size:0.75rem;
+transition:0.3s;
+}
+
+.more-btn:hover{
+background:#5a3935;
+transform:translateY(-3px);
+}
+
+.back{
+display:inline-block;
+margin-top:3rem;
+padding:1rem 1.5rem;
+background:#111;
+color:#fff;
+text-decoration:none;
+font-family:var(--mono);
+border-radius:999px;
+font-size:0.75rem;
+text-transform:uppercase;
+transition:0.3s;
+}
+
+.back:hover{
+background:var(--accent);
+color:var(--paper);
+transform:translateY(-3px);
+box-shadow:0 10px 24px rgba(20, 106, 172, 0.771);
+}
+
+@media(max-width:900px){
+
+.grid{
+grid-template-columns:1fr 1fr;
+}
+
+}
+
+@media(max-width:768px){
+.nav ul { display: none; }
+}
+
+@media(max-width:600px){
+
+.container{
+padding:2rem 1rem;
+}
+
+.grid{
+grid-template-columns:1fr;
+}
+
+.hero-name{
+line-height:1;
+}
+
+.card img{
+height:200px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="nav-placeholder"></div>
+
+<div class="container">
+
+<h1 class="hero-name">Premium <em>Times</em></h1>
+<p>
+Award-winning investigative, multimedia, and data journalism projects covering governance, migration, education, conflict, and accountability.
+</p>
+
+<div class="grid">
+
+<a class="card" href="https://www.premiumtimesng.com/news/headlines/503922-investigation-canada-rush-what-desperate-nigerian-asylum-seekers-are-telling-canada-about-nigeria.html" target="_blank">
+
+<img
+src="https://scontent-sjc6-1.xx.fbcdn.net/v/t39.30808-6/473529228_2772638712918655_6146125050277835670_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=127cfc&_nc_ohc=HcipsipuGeQQ7kNvwH-Aj4W&_nc_oc=AdosgJF-rC6rWeJIBWdDeXR5UG5ONgZEL7hmOuclZWCjmGVDmJnEYRiF0BR6stkNO_D2WxmdXEvaIrhpjYT88kx4&_nc_zt=23&_nc_ht=scontent-sjc6-1.xx&_nc_gid=vMcQ8j59ZeBNuu6wk44ERQ&_nc_ss=7b2a8&oh=00_Af4kYf2bi1I3X8QJXm7OgFtP0CFSQgmHHrGkRPszzxvPfw&oe=6A0C5D21"
+alt="Canada immigration story"
+loading="lazy"
+onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=640&q=75&auto=format';">
+
+<div class="content">
+<h3>Investigation: Canada Rush</h3>
+</div>
+
+</a>
+
+<a class="card" href="https://www.premiumtimesng.com/news/headlines/489309-pandora-papers-ex-governors-ex-minister-others-kept-n117-billion-assets-in-two-tax-haven-banks.html" target="_blank">
+
+<img
+src="https://media.icij.org/uploads/2021/10/Overview.jpg"
+alt="Financial corruption investigation"
+loading="lazy"
+onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=640&q=75&auto=format';">
+
+<div class="content">
+<h3>Pandora Papers Investigation</h3>
+</div>
+
+</a>
+
+<a class="card" href="https://www.premiumtimesng.com/news/headlines/504034-investigation-unstable-plateau-1-inside-story-of-carnage-that-killed-37-people-in-yelwa-zangam.html" target="_blank">
+
+<img
+src="https://cdn.britannica.com/74/246774-050-22A84A51/Locator-map-Jos-Plateau.jpg?w=300"
+alt="Conflict reporting in Plateau"
+loading="lazy"
+onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=640&q=75&auto=format';">
+
+<div class="content">
+<h3>Unstable Plateau 1</h3>
+</div>
+
+</a>
+
+<a class="card" href="https://www.premiumtimesng.com/news/headlines/506301-unstable-plateau-2-how-muslims-christians-work-for-peace-in-troubled-nigerian-state.html" target="_blank">
+
+<img
+src="data:image/jpeg;base64,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    "
+alt="Peace and community story"
+loading="lazy"
+onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=640&q=75&auto=format';">
+
+<div class="content">
+<h3>Unstable Plateau 2</h3>
+</div>
+
+</a>
+
+<a class="card" href="https://www.premiumtimesng.com/news/headlines/513375-unstable-plateau-3-a-wounded-people-and-their-healing-process.html" target="_blank">
+
+<img
+src="https://www.aljazeera.com/wp-content/uploads/2022/04/WEB-NIGERIA-PLATEAU-STATE-ABUJA-1000X562.jpg?resize=770%2C513&quality=80"
+alt="Healing and recovery story"
+loading="lazy"
+onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=640&q=75&auto=format';">
+
+<div class="content">
+<h3>Unstable Plateau 3</h3>
+</div>
+
+</a>
+
+<a class="card" href="https://www.premiumtimesng.com/news/headlines/491234-special-report-dogged-by-slow-internet-connectivity-nigerians-and-their-businesses-count-losses.html" target="_blank">
+
+<img
+src="https://i0.wp.com/media.premiumtimesng.com/wp-content/files/2021/10/Pic2.png?resize=520%2C349&ssl=1"
+alt="Internet connectivity story"
+loading="lazy"
+onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=640&q=75&auto=format';">
+
+<div class="content">
+<h3>Nigeria's Slow Internet Crisis</h3>
+</div>
+
+</a>
+
+<a class="card" href="https://www.premiumtimesng.com/news/headlines/435772-special-report-how-nigerians-are-paying-deadly-price-for-europes-dirty-fuel.html?tztc=1" target="_blank">
+
+<img
+src="https://scontent-sjc6-1.xx.fbcdn.net/v/t39.30808-6/473529228_2772638712918655_6146125050277835670_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=127cfc&_nc_ohc=HcipsipuGeQQ7kNvwEXCU_X&_nc_oc=Ado4ZiIavTP5Uf56llqQfABvsxAnPPPfm6cgzezMp6D6Fd7ma9SUcpRLIY6yKJi12GDk_Nc18Kjp06brBoVA446p&_nc_zt=23&_nc_ht=scontent-sjc6-1.xx&_nc_gid=QJkcATprWMv9p09dQOGQMA&_nc_ss=7b2a8&oh=00_Af4kYf2bi1I3X8QJXm7OgFtP0CFSQgmHHrGkRPszzxvPfw&oe=6A0C5D21"
+alt="Europe's Dirty Fuel"
+loading="lazy"
+onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=640&q=75&auto=format';">
+
+<div class="content">
+<h3>Europe's Dirty Fuel Investigation</h3>
+</div>
+
+</a>
+
+<a class="card" href="https://www.premiumtimesng.com/news/headlines/454439-analysis-nigeria-spends-billions-on-pipeline-maintenance-as-hundreds-are-vandalised-annually.html?tztc=1" target="_blank">
+
+<img
+src="https://scontent-sjc3-1.xx.fbcdn.net/v/t1.6435-9/172103150_1746809395501597_7275905433107376800_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=127cfc&_nc_ohc=6rjwUvThMEsQ7kNvwHIbxyJ&_nc_oc=AdpEEN8kQuBHSp-FK9THE_scn6VK8q_aq7_X_D2BmAM9Cg8EMsatjTd0r_oWPgcSvD2AEwlOjfi-50KueWWW18uK&_nc_zt=23&_nc_ht=scontent-sjc3-1.xx&_nc_gid=oBXlx6C3_3J9CjGHSKOf8Q&_nc_ss=7b2a8&oh=00_Af74l0ik92tGQMKVUryLwzMyIF97FjWsyY_iS3BAfVRVig&oe=6A2DF640"
+alt="Pipeline vandalism investigation"
+loading="lazy"
+onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=640&q=75&auto=format';">
+
+<div class="content">
+<h3>Pipeline Vandalism Investigation</h3>
+</div>
+
+</a>
+
+</div>
+
+<div style="text-align:center;margin-top:4rem;">
+
+<a href="https://www.premiumtimesng.com/author/yusufakinpelu/"
+target="_blank"
+style="
+display:inline-block;
+padding:1rem 2rem;
+background:#111;
+color:white;
+text-decoration:none;
+border-radius:999px;
+font-family:'DM Mono',monospace;
+letter-spacing:0.1em;
+text-transform:uppercase;
+font-size:0.75rem;
+transition:0.3s;
+">
+View other stories here
+
+</a>
+
+</div>
+
+<a href="index.html" class="back">← Back Home</a>
+
+</div>
+<script src="nav.js"></script>
+</body>
+</html>

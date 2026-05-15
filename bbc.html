@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BBC — Yusuf Akinpelu</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+:root{
+--paper:#e8dece;
+--ink:#111111;
+--accent:#7f4f24;
+--rule:rgba(0,0,0,0.1);
+--card:#f6edde;
+--serif:'Playfair Display',serif;
+--sans:'DM Sans',sans-serif;
+--mono:'DM Mono',monospace;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+background:var(--paper);
+font-family:var(--sans);
+color:var(--ink);
+line-height:1.6;
+overflow-x:hidden;
+}
+
+.container{
+max-width:1280px;
+margin:auto;
+padding:4rem 2rem 6rem;
+}
+
+.hero{
+padding-bottom:4rem;
+border-bottom:1px solid var(--rule);
+margin-bottom:4rem;
+}
+
+.hero h1{
+font-family:var(--serif);
+font-size:clamp(3rem,9vw,6rem);
+line-height:0.95;
+font-weight:900;
+letter-spacing:-0.04em;
+margin-bottom:1rem;
+}
+
+.hero p{
+max-width:760px;
+font-size:1.1rem;
+opacity:0.7;
+}
+
+.quick-nav{
+display:flex;
+flex-wrap:wrap;
+justify-content:flex-start;
+align-items:center;
+gap:1rem;
+margin-top:2.5rem;
+width:100%;
+}
+
+.quick-nav a{
+display:flex;
+align-items:center;
+justify-content:center;
+padding:1rem 1.5rem;
+background:#111;
+color:#fff;
+text-decoration:none;
+border-radius:999px;
+font-family:var(--mono);
+font-size:0.72rem;
+letter-spacing:0.12em;
+text-transform:uppercase;
+transition:0.3s ease;
+white-space:nowrap;
+flex:0 1 auto;
+}
+
+.quick-nav a:hover{
+transform:translateY(-4px);
+background:var(--accent);
+}
+
+.section{
+margin-top:6rem;
+}
+
+.section-title{
+font-family:var(--serif);
+font-size:clamp(2.5rem,4vw,4rem);
+font-weight:700;
+letter-spacing:-0.03em;
+margin-bottom:2.5rem;
+position:relative;
+display:inline-block;
+}
+
+.section-title::after{
+content:"";
+position:absolute;
+left:0;
+bottom:-10px;
+width:70%;
+height:4px;
+background:var(--accent);
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:2rem;
+}
+
+.card{
+background:var(--card);
+border:1px solid var(--rule);
+overflow:hidden;
+text-decoration:none;
+color:var(--ink);
+transition:0.35s ease;
+position:relative;
+border-radius:22px;
+display:block;
+}
+
+.card:hover{
+transform:translateY(-8px);
+box-shadow:0 18px 40px rgba(0,0,0,0.12);
+}
+
+.card img{
+width:100%;
+height:240px;
+object-fit:cover;
+display:block;
+transition:0.5s ease;
+}
+
+.card:hover img{
+transform:scale(1.05);
+}
+
+.content{
+padding:1.6rem;
+}
+
+.tag{
+font-family:var(--mono);
+font-size:0.7rem;
+letter-spacing:0.12em;
+text-transform:uppercase;
+color:var(--accent);
+margin-bottom:1rem;
+display:block;
+}
+
+.content h3{
+font-family:var(--serif);
+font-size:1.45rem;
+line-height:1.3;
+font-weight:700;
+margin-bottom:1rem;
+}
+
+.content p{
+font-size:0.95rem;
+opacity:0.72;
+}
+
+.view-btn-wrap{
+text-align:center;
+margin-top:5rem;
+}
+
+.more-btn{
+display:inline-block;
+padding:1.1rem 2.2rem;
+background:#111;
+color:white;
+text-decoration:none;
+border-radius:999px;
+font-family:var(--mono);
+letter-spacing:0.12em;
+text-transform:uppercase;
+font-size:0.74rem;
+transition:0.3s;
+}
+
+.more-btn:hover{
+background:var(--accent);
+transform:translateY(-4px);
+}
+
+.back{
+display:inline-block;
+margin-top:3rem;
+padding:1rem 1.5rem;
+background:#111;
+color:#fff;
+text-decoration:none;
+font-family:var(--mono);
+border-radius:999px;
+font-size:0.75rem;
+text-transform:uppercase;
+transition:0.3s ease;
+}
+
+.back:hover{
+background:var(--accent);
+color:var(--paper);
+transform:translateY(-3px);
+box-shadow:0 10px 24px rgba(20, 106, 172, 0.771);
+}
+
+@media(max-width:1000px){
+
+.grid{
+grid-template-columns:1fr 1fr;
+}
+
+}
+
+@media(max-width:700px){
+
+.grid{
+grid-template-columns:1fr;
+}
+
+.hero h1{
+font-size:clamp(3rem,8vw,6rem);
+line-height:0.95;
+margin-bottom:1rem;
+}
+
+.quick-nav{
+flex-direction:column;
+align-items:flex-start;
+}
+
+.quick-nav a{
+width:100%;
+justify-content:center;
+}
+
+.container{
+padding:3rem 1.2rem 5rem;
+}
+
+.card img{
+height:220px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="hero">
+
+<h1>BBC</h1>
+
+<p>
+Features, data journalism, TV, radio, and multimedia productions translated to over 42 languages.
+</p>
+
+<div class="quick-nav">
+<a href="#features">Features</a>
+<a href="#data">Data Journalism</a>
+<a href="#tv">TV</a>
+<a href="#radio">Radio / Podcast</a>
+</div>
+
+</div>
+
+<section class="section" id="features">
+
+<h2 class="section-title">Features</h2>
+
+<div class="grid">
+
+<a class="card" href="https://www.bbc.com/news/articles/c5ygqenwx78o" target="_blank">
+<img src="assets/trump_2.jpg" alt="Trump meets African leaders">
+<div class="content">
+<span class="tag">BBC News</span>
+<h3>Trump meets five African leaders</h3>
+<p>Explainer on why them, and why now.</p>
+</div>
+</a>
+
+<a class="card" href="https://www.bbc.com/news/articles/c23gz78v5jjo" target="_blank">
+<img src="https://ichef.bbci.co.uk/news/1536/cpsprodpb/f4de/live/1a0efd40-5e2b-11f0-bbf2-09f80948283f.jpg.webp" alt="Nigeria rejects third-country prisoners">
+<div class="content">
+<span class="tag">BBC World</span>
+<h3>Nigeria rejects third-country prisoners from the US</h3>
+<p>Nigeria has 'enough problems' of its own, FM says</p>
+</div>
+</a>
+
+<a class="card" href="https://www.bbc.com/afrique/articles/c70qvdlx98no" target="_blank">
+<img src="https://ichef.bbci.co.uk/news/1536/cpsprodpb/1738/live/8e02add0-eca3-11f0-be98-fd0ce9c3379d.jpg.webp" alt="African migrants on edge over ICE raids">
+<div class="content">
+<span class="tag">BBC Afrique</span>
+<h3>African migrants on edge over ICE raids</h3>
+<p>They avoid public places, including churches and schools</p>
+</div>
+</a>
+
+<a class="card" href="https://www.bbc.com/mundo/articles/cj0mdd3zj16o" target="_blank">
+<img src="assets/trump_2.jpg" alt="Trump pressures African countries to accept deported Venezuelans">
+<div class="content">
+<span class="tag">BBC Mundo</span>
+<h3>Trump pressures African countries to accept deported Venezuelans</h3>
+<p>Some of the countries have caved in.</p>
+</div>
+</a>
+
+<a class="card" href="https://www.bbc.com/mundo/articles/c3gz9v41xw9o" target="_blank">
+<img src="https://ichef.bbci.co.uk/news/1536/cpsprodpb/A67E/production/_130222624_gettyimages-1230300168.jpg.webp" alt="Russia Wagner Group in Africa">
+<div class="content">
+<span class="tag">BBC Mundo</span>
+<h3>Russia's Wagner Group in Africa</h3>
+<p>Why African countries are cutting ties with the West and courting Russia</p>
+</div>
+</a>
+
+<a class="card" href="https://www.bbc.com/news/world-africa-63411446" target="_blank">
+<img src="https://ichef.bbci.co.uk/news/1536/cpsprodpb/1515F/production/_118776368_sahel_region_640x2-nc.png.webp" alt="Coup in Niger">
+<div class="content">
+<span class="tag">BBC Africa</span>
+<h3>Coup in Niger</h3>
+<p>What it means for the troubled Sahel region.</p>
+</div>
+</a>
+
+<a class="card" href="https://www.bbc.com/news/world-africa-63319113" target="_blank">
+<img src="https://ichef.bbci.co.uk/news/1536/cpsprodpb/11B5D/production/_127414527_floods.jpg.webp" alt="2022 Nigeria floods">
+<div class="content">
+<span class="tag">BBC Africa</span>
+<h3>2022 Nigeria floods</h3>
+<p>'I have nowhere to go'</p>
+</div>
+</a>
+
+<a class="card" href="https://www.bbc.com/news/world-africa-66030749" target="_blank">
+<img src="https://ichef.bbci.co.uk/news/1536/cpsprodpb/3536/production/_130222631_gettyimages-1258869571_afp.jpg.webp" alt="Sierra Leone election">
+<div class="content">
+<span class="tag">BBC News</span>
+<h3>Sierra Leone presidential election</h3>
+<p>Julius Maada Bio sworn in as opposition cries foul.</p>
+</div>
+</a>
+
+</div>
+
+</section>
+
+<section class="section" id="data">
+
+<h2 class="section-title">Data Journalism</h2>
+
+<div class="grid">
+
+<a class="card" href="https://www.bbc.com/news/resources/idt-9ff664e9-8cf9-4948-93e5-3268debcee1b" target="_blank">
+<img src="assets/election.png" alt="Nigeria election livepage">
+<div class="content">
+<span class="tag">Election livepage</span>
+<h3>2023 Nigeria Elections</h3>
+<p>Nigeria election results 2023: Up-to-date results of presidential and parliamentary races.</p>
+</div>
+</a>
+
+<a class="card" href="https://www.bbc.co.uk/news/resources/idt-966cd330-15e7-40de-9b22-3008247d1911" target="_blank">
+<img src="assets/tinubu-timeline.png" alt="Interactive Timeline">
+<div class="content">
+<span class="tag">Timeline</span>
+<h3>Interactive Timeline</h3>
+<p>Bola Tinubu: Timeline of how Nigeria's kingmaker became king.</p>
+</div>
+</a>
+
+<a class="card" href="https://www.bbc.com/news/world-africa-64431962" target="_blank">
+<img src="https://ichef.bbci.co.uk/news/1536/cpsprodpb/5192/production/_128728802_nigeria_online_access_640-nc.png.webp" alt="Nigeria in 10 charts">
+<div class="content">
+<span class="tag">BBC Africa</span>
+<h3>Nigeria in 10 Charts</h3>
+<p>Nigeria election 2023: Charts that explain the nation.</p>
+</div>
+</a>
+
+<a class="card" href="https://www.bbc.com/news/world-africa-62444316" target="_blank">
+<img src="assets/kenya-election.png" alt="Kenya election livepage">
+<div class="content">
+<span class="tag">Election livepage</span>
+<h3>2022 Kenyan Elections</h3>
+<p>Data-driven journalism breaking down governance and economic issues.</p>
+</div>
+</a>
+
+</div>
+
+</section>
+
+<section class="section" id="tv">
+
+<h2 class="section-title">TV</h2>
+
+<div class="grid">
+
+<a class="card" href="https://youtu.be/PqYMJ68ao6w?si=vOOrTtYjxzQjluHH" target="_blank">
+<img src="https://img.youtube.com/vi/PqYMJ68ao6w/maxresdefault.jpg" alt="Fuel hike in Nigeria">
+<div class="content">
+<span class="tag">BBC Focus on Africa</span>
+<h3>Rant</h3>
+<p>Why is there fuel hike in Nigeria?</p>
+</div>
+</a>
+
+<a class="card" href="https://www.youtube.com/watch?v=YN0Fb_q1swM&t=109s" target="_blank">
+<img src="https://img.youtube.com/vi/YN0Fb_q1swM/maxresdefault.jpg" alt="Nigeria accuses Briton of treasons">
+<div class="content">
+<span class="tag">BBC Focus on Africa</span>
+<h3>Two-way</h3>
+<p>Nigeria accuses Briton of treasons.</p>
+</div>
+</a>
+
+<a class="card" href="https://youtu.be/KkbjTsTvdyM?si=SETM5rli2bbuAtRF" target="_blank">
+<img src="https://ichef.bbci.co.uk/news/1536/cpsprodpb/13FAE/production/_132683818_gettyimages-1235315196.jpg.webp" alt="Guinea political shakeup">
+<div class="content">
+<span class="tag">BBC News</span>
+<h3>Guinea political shakeup</h3>
+<p>Why did Guinea's military junta dissolve government?</p>
+</div>
+</a>
+
+<a class="card" href="https://youtu.be/jANIYN272RQ?si=55-8JaBmwk8_2pr_" target="_blank">
+<img src="https://c.files.bbci.co.uk/E480/production/_132269485_bbc-senegal-3-compositioncopy.jpg" alt="Senegal Football Miracle">
+<div class="content">
+<span class="tag">TV Package</span>
+<h3>Senegal Football Miracle</h3>
+<p>How Senegal came to dominate African football.</p>
+</div>
+</a>
+
+<a class="card" href="https://youtu.be/4Iw9Yth5KGU?si=0lDQFvP8PFSGJCC_" target="_blank">
+<img src="https://ichef.bbci.co.uk/news/1536/cpsprodpb/A67E/production/_130222624_gettyimages-1230300168.jpg.webp" alt="CAR Wagner-backed referendum">
+<div class="content">
+<span class="tag">BBC News</span>
+<h3>CAR Wagner-backed referendum</h3>
+<p>It may keep President Touadéra in power for life.</p>
+</div>
+</a>
+
+<a class="card" href="https://youtu.be/6g0299pVEkw?si=IxbQDtwxvrDvp8w8" target="_blank">
+<img src="https://ichef.bbci.co.uk/news/1536/cpsprodpb/dc84/live/74259fd0-cc78-11f0-93ea-199ffe9fe785.jpg.webp" alt="Guinea Bissau impasse">
+<div class="content">
+<span class="tag">BBC Focus on Africa</span>
+<h3>Guinea Bissau Impasse</h3>
+<p>Guinea Bissau teachers angry over salary suspension.</p>
+</div>
+</a>
+
+</div>
+
+</section>
+
+<section class="section" id="radio">
+
+<h2 class="section-title">Radio / Podcast</h2>
+
+<div class="grid">
+
+<a class="card" href="https://youtu.be/p_kPcgjCbuM?si=cr4MXgcmGs-vgk3s" target="_blank">
+<img src="https://ichef.bbci.co.uk/images/ic/1008x567/p0ftyjsk.jpg" alt="Ghost workers in Nigeria">
+<div class="content">
+<span class="tag">Focus on Africa Podcast</span>
+<h3>Two-way analysis</h3>
+<p>Nigerian Civil Service Ghost Worker Menace.</p>
+</div>
+</a>
+
+<a class="card" href="https://youtu.be/Mex_8ycSVqQ?si=ZUwfAMkInynRiyri" target="_blank">
+<img src="https://img.youtube.com/vi/Mex_8ycSVqQ/maxresdefault.jpg" alt="Benin fuel price surge">
+<div class="content">
+<span class="tag">BBC World Business Report</span>
+<h3>Benin Fuel Price Surge</h3>
+<p>How petrol price soared in Benin after Nigeria moves to scrap fuel subsidy.</p>
+</div>
+</a>
+
+<a class="card" href="https://www.bbc.co.uk/programmes/p0ft8xf7" target="_blank">
+<img src="https://ichef.bbci.co.uk/images/ic/1008x567/p0m0lkpf.jpg" alt="Fuel subsidy report">
+<div class="content">
+<span class="tag">BBC World Business Report</span>
+<h3>Benin Fuel Price Surge</h3>
+<p>How petrol price soared in Benin after Nigeria moves to scrap fuel subsidy.</p>
+</div>
+</a>
+
+<a class="card" href="https://www.bbc.com/audio/play/p0b8pcy7" target="_blank">
+<img src="https://ichef.bbci.co.uk/images/ic/320x180/p0j3k7qm.jpg" alt="Nigeria prison break">
+<div class="content">
+<span class="tag">Africa Daily</span>
+<h3>Nigeria Prison Break</h3>
+<p>How are so many prisoners escaping in Nigeria?</p>
+</div>
+</a>
+
+</div>
+
+</section>
+
+<div class="view-btn-wrap">
+
+<a href="https://www.dropbox.com/scl/fi/7xmp7uptqb0eu8i2ymn60/Yusuf-Akinpelu-Portfolio.paper"
+target="_blank"
+class="more-btn">
+View Other Stories Here
+</a>
+
+</div>
+
+<a href="index.html" class="back">← Back Home</a>
+
+</div>
+<script src="nav.js"></script>
+</body>
+</html>

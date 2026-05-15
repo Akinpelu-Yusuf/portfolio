@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yusuf Akinpelu — Storyteller</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #0f0e0c;
+      --paper: #e8dece;
+      --rule: rgba(15,14,12,0.15);
+      --accent: #5a3935;
+      --serif: 'Playfair Display', Georgia, serif;
+      --mono: 'DM Mono', monospace;
+      --sans: 'DM Sans', system-ui, sans-serif;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.6; overflow-x: hidden; }
+
+    /* NAV — sticky, always visible */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: rgba(229,209,177,0.97);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--rule);
+      padding: 0 2rem;
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 52px;
+    }
+    .nav-logo {
+      font-family: var(--mono); font-size: 0.75rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--ink); text-decoration: none;
+    }
+    .nav-links {
+      display: flex; list-style: none; position: relative;
+      font-family: var(--mono); font-size: 0.72rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .nav-links > li { position: relative; }
+    .nav-links a {
+      color: var(--ink); text-decoration: none; opacity: 0.6;
+      transition: opacity 0.2s; padding: 0 0.9rem;
+      display: block; line-height: 52px;
+    }
+    .nav-links a:hover { opacity: 1; }
+    /* BBC dropdown */
+    .nav-links .drop {
+      display: none; position: absolute; top: 52px; left: 50%;
+      transform: translateX(-50%);
+      background: rgba(229,209,177,0.99); backdrop-filter: blur(14px);
+      border: 1px solid var(--rule); min-width: 195px;
+      list-style: none; padding: 0.4rem 0; z-index: 300;
+    }
+    .nav-links li:hover .drop { display: block; }
+    .nav-links .drop a { line-height: 1; padding: 0.75rem 1.25rem; opacity: 0.65; font-size: 0.7rem; border: none; }
+    .nav-links .drop a:hover { opacity: 1; background: rgba(0,0,0,0.05); }
+
+    /* TOP RULE */
+    .top-rule { max-width: 1200px; margin: 0 auto; border: none; border-top: 3px solid var(--ink); }
+
+    /* HERO */
+    .hero {
+      max-width: 1200px; margin: 0 auto;
+      padding: 5rem 2rem 3rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+      align-items: end; border-bottom: 1px solid var(--rule);
+    }
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(3.5rem,7vw,6rem);
+      font-weight: 900; line-height: 0.92;
+      letter-spacing: -0.02em; color: var(--ink);
+    }
+    .hero-name em { font-style: italic; font-weight: 400; }
+    .hero-desc { padding-top: 2rem; font-size: 1.15rem; line-height: 1.75; opacity: 0.75; max-width: 42ch; }
+
+    .hero-social { display: flex; gap: 1.1rem; padding-top: 1.75rem; flex-wrap: wrap; align-items: center; }
+    .hero-social a {
+      color: var(--ink); text-decoration: none; opacity: 0.45;
+      transition: opacity 0.2s, transform 0.2s;
+      display: flex; align-items: center; font-size: 1.3rem;
+    }
+    .hero-social a:hover { opacity: 1; transform: scale(1.1); }
+    .hero-social a svg { width: 1.25rem; height: 1.25rem; fill: currentColor; display: block; }
+
+    .resume-btn {
+      display: inline-flex; align-items: center; gap: 0.7rem;
+      margin-top: 1.5rem; padding: 0.95rem 1.6rem;
+      background: var(--ink); color: var(--paper);
+      border-radius: 999px; text-decoration: none;
+      font-family: var(--mono); font-size: 0.72rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+      border: 1px solid transparent;
+    }
+    .resume-btn i { font-size: 0.9rem; }
+    .resume-btn:hover { background: var(--accent); transform: translateY(-3px); box-shadow: 0 10px 24px rgba(90,57,53,0.35); }
+
+    /* HERO PHOTO — interactive parallax */
+    .hero-photo-frame {
+      width: 100%; aspect-ratio: 3/4;
+      background: #c2b6a6; border: 1px solid var(--rule);
+      overflow: hidden; position: relative; cursor: crosshair;
+    }
+    .hero-photo-frame img {
+      width: 108%; height: 108%; margin: -4%;
+      object-fit: cover; display: block;
+      filter: grayscale(15%) contrast(1.05);
+      transition: transform 120ms ease-out, filter 200ms;
+    }
+    .hero-photo-frame:hover img { filter: grayscale(0%) contrast(1.08); }
+    .hero-photo-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 1rem 1.25rem;
+      background: linear-gradient(transparent,rgba(15,14,12,0.7));
+      color: #f5f0e8; font-family: var(--mono);
+      font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+    }
+
+    /* MARQUEE — left to right: 0% → -50% */
+    .marquee-wrap {
+      border-bottom: 1px solid var(--rule);
+      overflow: hidden; padding: 0.6rem 0;
+      background: var(--ink);
+    }
+    .marquee-track {
+      display: flex; width: max-content;
+      animation: ltr-scroll 34s linear infinite;
+    }
+    .marquee-wrap:hover .marquee-track { animation-play-state: paused; }
+    .marquee-group { display: flex; align-items: center; gap: 0; list-style: none; white-space: nowrap; }
+    .marquee-item {
+      font-family: var(--mono); font-size: 0.72rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--paper); padding: 0 1.5rem; opacity: 0.7;
+      cursor: default; transition: opacity 0.2s;
+    }
+    .marquee-item:hover { opacity: 1; }
+    .marquee-sep { color: var(--accent); opacity: 1 !important; font-size: 1rem; }
+    @keyframes ltr-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* SECTION */
+    .section { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; border-bottom: 1px solid var(--rule); }
+    .section-header { display: flex; align-items: baseline; gap: 1rem; margin-bottom: 3rem; }
+    .section-num { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase; }
+    .section-label { font-family: var(--serif); font-size: 2.25rem; font-weight: 700; letter-spacing: -0.02em; }
+
+    /* SKILLS GRID — full outer border like first design */
+    .skills-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      border-top: 1px solid var(--rule);
+      border-left: 1px solid var(--rule);
+    }
+    .skill-cell {
+      padding: 2rem 1.5rem;
+      border-right: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      transition: background 0.25s; cursor: default;
+    }
+    .skill-cell:hover { background: var(--ink); }
+    .skill-cell:hover .skill-num { color: var(--accent); }
+    .skill-cell:hover .skill-title { color: var(--paper); }
+    .skill-cell:hover .skill-body { color: rgba(245,240,232,0.55); }
+    .skill-num { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: rgb(164,114,12); display: block; margin-bottom: 0.75rem; transition: color 0.25s; }
+    .skill-title { font-family: var(--serif); font-size: 1.5rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 0.5rem; transition: color 0.25s; }
+    .skill-body { font-size: 0.9rem; opacity: 0.55; transition: color 0.25s; line-height: 1.55; }
+
+    /* PULL QUOTE */
+    .pull-quote { max-width: 1200px; margin: 0 auto; padding: 4.5rem 2rem; border-bottom: 1px solid var(--rule); }
+    .pull-quote blockquote { font-family: var(--serif); font-size: clamp(1.2rem,2.3vw,1.8rem); font-style: italic; font-weight: 400; line-height: 1.5; letter-spacing: -0.01em; max-width: 76ch; padding-left: 1.75rem; border-left: 4px solid var(--accent); }
+    .pull-quote cite { display: block; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 1.5rem; padding-left: 1.75rem; opacity: 0.42; font-style: normal; }
+
+    /* PUB GRID — 3-col, with thumbnails + dark hover overlay */
+    .pub-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      border-top: 1px solid var(--rule);
+      border-left: 1px solid var(--rule);
+    }
+    .pub-card {
+      border-right: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+      text-decoration: none; color: var(--ink);
+      transition: color 0.25s; display: block; overflow: hidden;
+    }
+    .pub-card:hover { color: var(--ink); }
+
+    /* Thumbnail */
+    .pub-thumb {
+      width: 100%; height: 148px; overflow: hidden;
+      position: relative; background: #b8aa98;
+    }
+    .pub-thumb img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      filter: grayscale(18%) contrast(1.04);
+      transition: transform 0.4s ease, filter 0.3s;
+    }
+    /* dark overlay */
+    .pub-thumb::after {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(15,14,12,0);
+      transition: background 0.28s;
+    }
+    .pub-card:hover .pub-thumb::after { background: rgba(15,14,12,0.52); }
+    .pub-card:hover .pub-thumb img { transform: scale(1.07); filter: grayscale(0%) contrast(1.07); }
+
+    .pub-body { padding: 1.25rem 1.5rem 1.5rem; transition: background 0.25s; }
+    .pub-card:hover .pub-body { background: rgba(15,14,12,0.04); }
+    .pub-name { font-family: var(--serif); font-size: 1.2rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 0.45rem; transition: color 0.25s; }
+    .pub-card:hover .pub-name { color: var(--accent); }
+    .pub-desc { font-size: 0.8rem; opacity: 0.5; line-height: 1.55; margin-bottom: 0.9rem; transition: color 0.2s; }
+    .pub-arrow { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; opacity: 0.35; transition: opacity 0.2s, transform 0.2s; text-transform: uppercase; }
+    .pub-card:hover .pub-arrow { opacity: 0.75; transform: translateX(4px); }
+
+    /* VIDEO */
+    .video-section { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; border-bottom: 1px solid var(--rule); }
+    .video-kicker { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+    .video-heading { font-family: var(--serif); font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1.5rem; }
+    .video-wrap { position: relative; padding-top: 56.25%; background: #111; }
+    .video-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+
+    /* FOOTER */
+    .footer { max-width: 1200px; margin: 0 auto; padding: 2rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border-top: 1px solid var(--rule); }
+    .footer-copy { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.4; }
+
+    /* AWARDS MODAL */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(15,14,12,0.78); z-index: 500; align-items: center; justify-content: center; padding: 2rem; }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: var(--paper); max-width: 780px; width: 100%; max-height: 90vh; overflow-y: auto; border: 1px solid var(--rule); }
+    .modal-top { position: sticky; top: 0; display: flex; justify-content: flex-end; background: var(--paper); border-bottom: 1px solid var(--rule); padding: 0.7rem 1.25rem; z-index: 10; }
+    .modal-top button { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; background: none; border: 1px solid var(--rule); padding: 0.4rem 0.9rem; cursor: pointer; color: var(--ink); transition: background 0.2s, color 0.2s; }
+    .modal-top button:hover { background: var(--ink); color: var(--paper); }
+    .modal-inner { padding: 2rem 2.5rem 2.5rem; }
+    .modal-title { font-family: var(--serif); font-size: 2rem; font-weight: 900; letter-spacing: -0.02em; margin-bottom: 0.4rem; }
+    .modal-sub { font-family: var(--mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 2rem; }
+    .modal-sh { font-family: var(--serif); font-size: 1.3rem; font-weight: 700; margin: 2.25rem 0 1rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--rule); }
+    .award-row { display: flex; align-items: flex-start; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid rgba(15,14,12,0.07); }
+    .award-row:last-child { border-bottom: none; }
+    .award-yr { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.08em; color: var(--accent); white-space: nowrap; padding-top: 0.18rem; min-width: 3.5rem; }
+    .award-txt { font-size: 0.95rem; line-height: 1.58; }
+    .award-txt a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; opacity: 0.65; transition: opacity 0.2s; }
+    .award-txt a:hover { opacity: 1; }
+
+    /* RESPONSIVE */
+    @media(max-width:900px) { .pub-grid { grid-template-columns: repeat(2,1fr); } }
+    @media(max-width:768px) {
+      .hero { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-photo { order: -1; }
+      .skills-grid { grid-template-columns: 1fr 1fr; }
+      .pub-grid { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+    }
+    @media(max-width:480px) {
+      .skills-grid { grid-template-columns: 1fr; }
+      .pub-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV — sticky, appears on every page via this shared header -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">Yusuf Akinpelu</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="oakland-north.html">Oakland North</a></li>
+      <li>
+        <a href="bbc.html">BBC &#9662;</a>
+        <ul class="drop">
+          <li><a href="bbc.html#features">Features</a></li>
+          <li><a href="bbc.html#data">Data Journalism</a></li>
+          <li><a href="bbc.html#tv">TV</a></li>
+          <li><a href="bbc.html#radio">Radio / Podcast</a></li>
+        </ul>
+      </li>
+      <li><a href="premium-times.html">Premium Times</a></li>
+      <li><a href="dubawa.html">Dubawa</a></li>
+    </ul>
+  </div>
+</nav>
+
+<hr class="top-rule">
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-left">
+    <h1 class="hero-name">Yusuf<br><em>Akin</em>pelu</h1>
+    <p class="hero-desc">I find stories from places no one wants to go, tell stories no one wants to tell, and give life to data.</p>
+
+    <nav class="hero-social" aria-label="Social media">
+      <a href="https://www.linkedin.com/in/yusuf-akinpelu/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+      <a href="https://www.youtube.com/@yusufakinpelu" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+      <a href="https://x.com/AkinpeluYusuph" target="_blank" rel="noopener" aria-label="X / Twitter">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.657l-5.207-6.807-5.979 6.807H2.556l7.73-8.835L1.75 2.25h6.822l4.713 6.231 5.453-6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/akinpeluyusuf/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.tiktok.com/@yusufakinpelu" target="_blank" rel="noopener" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+      <a href="https://www.facebook.com/yusuf.akinpelu.73/" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+    </nav>
+
+    <a href="https://canva.link/m1fjpiunyvglebe" target="_blank" rel="noopener" class="resume-btn">
+      <i class="fas fa-file-lines"></i>
+      Resume
+    </a>
+  </div>
+
+  <div class="hero-photo">
+    <div class="hero-photo-frame" id="heroFrame">
+      <img src="assets/yusuf.jpeg" alt="Yusuf Akinpelu" id="heroImg"
+        onerror="this.src='assets/yusuf.jpg';this.onerror=function(){this.style.display='none';this.parentNode.style.background='#c2b6a6';}">
+      <div class="hero-photo-caption">Journalist &amp; Storyteller</div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE — left to right, pauses on hover -->
+<div class="marquee-wrap" aria-label="Skills and disciplines" aria-hidden="true">
+  <div class="marquee-track">
+    <ul class="marquee-group">
+      <li class="marquee-item">Data Journalism</li><li class="marquee-item marquee-sep">&#215;</li>
+      <li class="marquee-item">OSINT</li><li class="marquee-item marquee-sep">&#215;</li>
+      <li class="marquee-item">Web Design</li><li class="marquee-item marquee-sep">&#215;</li>
+      <li class="marquee-item">Fact-Checking</li><li class="marquee-item marquee-sep">&#215;</li>
+      <li class="marquee-item">Adobe Premiere</li><li class="marquee-item marquee-sep">&#215;</li>
+      <li class="marquee-item">Multimedia</li><li class="marquee-item marquee-sep">&#215;</li>
+      <li class="marquee-item">Visual Journalism</li><li class="marquee-item marquee-sep">&#215;</li>
+      <li class="marquee-item">Storytelling</li><li class="marquee-item marquee-sep">&#215;</li>
+      <li class="marquee-item">R</li><li class="marquee-item marquee-sep">&#215;</li>
+      <li class="marquee-item">Python</li><li class="marquee-item marquee-sep">&#215;</li>
+      <li class="marquee-item">Mapping</li><li class="marquee-item marquee-sep">&#215;</li>
+    </ul>
+    <ul class="marquee-group" aria-hidden="true">
+      <li class="marquee-item">Data Journalism</li><li class="marquee-item marquee-sep">&#215;</li>
+      <li class="marquee-item">OSINT</li><li class="marquee-item marquee-sep">&#215;</li>
+      <li class="marquee-item">Web Design</li><li class="marquee-item marquee-sep">&#215;</li>
+      <li class="marquee-item">Fact-Checking</li><li class="marquee-item marquee-sep">&#215;</li>
+      <li class="marquee-item">Adobe Premiere</li><li class="marquee-item marquee-sep">&#215;</li>
+      <li class="marquee-item">Multimedia</li><li class="marquee-item marquee-sep">&#215;</li>
+      <li class="marquee-item">Visual Journalism</li><li class="marquee-item marquee-sep">&#215;</li>
+      <li class="marquee-item">Storytelling</li><li class="marquee-item marquee-sep">&#215;</li>
+      <li class="marquee-item">R</li><li class="marquee-item marquee-sep">&#215;</li>
+      <li class="marquee-item">Python</li><li class="marquee-item marquee-sep">&#215;</li>
+      <li class="marquee-item">Mapping</li><li class="marquee-item marquee-sep">&#215;</li>
+    </ul>
+  </div>
+</div>
+
+<!-- WHAT I DO -->
+<section class="section" id="skills">
+  <div class="section-header">
+    <span class="section-num"></span>
+    <h2 class="section-label">What I Do</h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-cell">
+      <span class="skill-num">narrative</span>
+      <div class="skill-title">Writing</div>
+      
+      <p class="skill-body">Crafting narratives that inform, move, and endure — from long-form features to breaking news.</p>
+    </div>
+    <div class="skill-cell">
+      <span class="skill-num">Analysis</span>
+      <div class="skill-title">Data Journalism</div>
+      <p class="skill-body">R, mapping, and data visualisation that turns numbers into compelling public interest journalism.</p>
+    </div>
+    <div class="skill-cell">
+      <span class="skill-num">visual</span>
+      <div class="skill-title">Multimedia</div>
+      <p class="skill-body">Video, audio, and interactive storytelling that brings data and people to life.</p>
+    </div>
+    <div class="skill-cell">
+      <span class="skill-num">Social Media</span>
+      <div class="skill-title">Digital Storytelling</div>
+      <p class="skill-body">Beating copies into shape — ensuring clarity, accuracy, and editorial impact.</p>
+    </div>
+    <div class="skill-cell">
+      <span class="skill-num">Sourcing</span>
+      <div class="skill-title">Research</div>
+      <p class="skill-body">Rigorous investigation, OSINT techniques, and data analysis to uncover what others miss.</p>
+    </div>
+    <div class="skill-cell">
+      <span class="skill-num">Hosting</span>
+      <div class="skill-title">Emceeing</div>
+      <p class="skill-body">Web design and visual journalism that makes stories feel alive on the page and screen.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PULL QUOTE -->
+<div class="pull-quote" id="quote">
+  <blockquote>
+    &#8220;The Sanlam Financial Journalist of the Year candidate [Yusuf Akinpelu] was unanimously selected by the judges and was fully deserving of the noble recognition as the best of the best for the 2021 awards.&#8221;
+  </blockquote>
+  <cite>Professor Nixon Kariithi &#8212; Chairman, Sanlam Financial Journalism Awards Adjudication Panel</cite>
+</div>
+
+<!-- WHAT I HAVE DONE -->
+<section class="section" id="work">
+  <div class="section-header">
+    <h2 class="section-label">What I Have Done</h2>
+  </div>
+  <div class="pub-grid">
+
+    <a class="pub-card" href="aging-in-america.html">
+      <div class="pub-thumb">
+        <img src="https://journalism.berkeley.edu/wp-content/uploads/2025/11/Screenshot-2025-11-24-at-5.22.46-PM-1536x966.png"
+          alt="Aging in America" loading="lazy"
+          onerror="this.parentNode.style.background='#a89880';">
+      </div>
+      <div class="pub-body">
+        <div class="pub-name">Aging in America</div>
+        <p class="pub-desc">Reporting on the lives, challenges, and stories of older Americans.</p>
+        <div class="pub-arrow">View details &#8594;</div>
+      </div>
+    </a>
+
+    <a class="pub-card" href="oakland-north.html">
+      <div class="pub-thumb">
+        <img src="https://oaklandnorth.net/wp-content/uploads/2025/11/Dump-2.jpg"
+          alt="Oakland North" loading="lazy"
+          onerror="this.src='https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=640&q=75&auto=format';">
+      </div>
+      <div class="pub-body">
+        <div class="pub-name">Oakland North</div>
+        <p class="pub-desc">Community-driven journalism covering courts, crime, and public safety in Oakland, California.</p>
+        <div class="pub-arrow">View details &#8594;</div>
+      </div>
+    </a>
+
+    <a class="pub-card" href="bbc.html">
+      <div class="pub-thumb">
+        <img src="https://scontent-sjc6-1.xx.fbcdn.net/v/t39.30808-6/484835152_2827159650799894_4886914072200597601_n.jpg?_nc_cat=111&ccb=1-7&_nc_sid=127cfc&_nc_ohc=N2QEM34rP3YQ7kNvwEGwJSi&_nc_oc=Adpwj_f6E3TLo8UpQ-8cr_TKpD5RN_Snr1IL7erDNYHx483PDXMiuHWSNV5vhz9lDXPu8NRlwl_5tWB9cCY60E6X&_nc_zt=23&_nc_ht=scontent-sjc6-1.xx&_nc_gid=oEEMNfJke5KyB6QOScQb3w&_nc_ss=7b2a8&oh=00_Af6dfNKzswjOje7d7EyP1ebk2TW3mbFhzUgU5p4FxW0-yQ&oe=6A0C3F99"
+          alt="BBC" loading="lazy"
+          onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=640&q=75&auto=format';">
+      </div>
+      <div class="pub-body">
+        <div class="pub-name">BBC</div>
+        <p class="pub-desc">Features, data journalism, TV, radio, and multimedia productions translated to over 42 languages.</p>
+        <div class="pub-arrow">View details &#8594;</div>
+      </div>
+    </a>
+
+    <a class="pub-card" href="premium-times.html">
+      <div class="pub-thumb">
+        <img src="https://journalism.berkeley.edu/wp-content/uploads/2025/09/IMG_6625-855x1140.jpeg"
+          alt="Premium Times" loading="lazy"
+          onerror="this.src='https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=640&q=75&auto=format';">
+      </div>
+      <div class="pub-body">
+        <div class="pub-name">Premium Times</div>
+        <p class="pub-desc">Award-winning and impactful investigative and data reporting.</p>
+        <div class="pub-arrow">View details &#8594;</div>
+      </div>
+    </a>
+
+    <a class="pub-card" href="dubawa.html">
+      <div class="pub-thumb">
+        <img src="https://pbs.twimg.com/media/FZ5yAk-XEAAJ-Bj.jpg "
+          alt="Dubawa" loading="lazy"
+          onerror="this.src='https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=640&q=75&auto=format';">
+      </div>
+      <div class="pub-body">
+        <div class="pub-name">Dubawa</div>
+        <p class="pub-desc">Fact-checking and verification journalism for West Africa.</p>
+        <div class="pub-arrow">View details &#8594;</div>
+      </div>
+    </a>
+
+    <a class="pub-card" href="#" onclick="openAwards(event)">
+      <div class="pub-thumb">
+        <img src="https://scontent-sjc6-1.xx.fbcdn.net/v/t39.30808-6/475224138_2781778635337996_4657775191827216206_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=127cfc&_nc_ohc=plgnQgjhbo8Q7kNvwF5bhXN&_nc_oc=AdpzK462hxGh1CzgAxigmjO_mwts6gDNZ5tRW08ltJ50Mg_HCEL4PrTC5lj758QlcWojx17tW9h0U6yy26NETjdE&_nc_zt=23&_nc_ht=scontent-sjc6-1.xx&_nc_gid=E7YR_v7pwq44emkTRN1dUQ&_nc_ss=7b2a8&oh=00_Af58YYpZQV7HiZA_3Z6pi0R-oIUAtYMJAw3axbIFc-QOrA&oe=6A0C5F05"
+          alt="Awards and Training" loading="lazy"
+          onerror="this.parentNode.style.background='#a89880';">
+      </div>
+      <div class="pub-body">
+        <div class="pub-name">Awards &amp; Training</div>
+        <p class="pub-desc">Recognitions, fellowships, and journalism training programmes.</p>
+        <div class="pub-arrow">View details &#8594;</div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- FEATURED VIDEO -->
+<div class="video-section" id="video">
+  <div class="video-kicker">Watch</div>
+  <h2 class="video-heading">Broadcast</h2>
+  <div class="video-wrap">
+    <iframe
+      src="https://www.youtube.com/embed/YN0Fb_q1swM?start=109&rel=0"
+      title="Featured BBC Report — Yusuf Akinpelu"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen loading="lazy">
+    </iframe>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <span class="footer-copy">&#169; 2026 Yusuf Akinpelu &#183; All rights reserved</span>
+  <span class="footer-copy">Journalist &#183; Storyteller &#183; Data Reporter</span>
+</footer>
+
+<!-- AWARDS MODAL -->
+<div class="modal-overlay" id="awardsModal" role="dialog" aria-modal="true" aria-label="Awards and Training">
+  <div class="modal-box">
+    <div class="modal-top"><button onclick="closeAwards()">Close &#10005;</button></div>
+    <div class="modal-inner">
+      <div class="modal-title">Awards &amp; Training</div>
+      <div class="modal-sub">Recognition &#183; Fellowships &#183; Professional Development</div>
+
+      <div class="modal-sh">Awards</div>
+      <div class="award-row"><span class="award-yr">2026</span><div class="award-txt">Bloomberg Journalism Program</div></div>
+      <div class="award-row"><span class="award-yr">2025</span><div class="award-txt">Mastercard Foundation Scholarship</div></div>
+      <div class="award-row"><span class="award-yr">2022</span><div class="award-txt">Sanlam Financial Journalist of the Year<br><a href="https://www.premiumtimesng.com/news/top-news/548301-premium-times-stories-shine-at-sanlam-financial-journalism-award-in-south-africa.html" target="_blank" rel="noopener">Read more &#8594;</a></div></div>
+      <div class="award-row"><span class="award-yr">2022</span><div class="award-txt">Winner, Sanlam Africa Growth Story Awards<br><a href="https://www.premiumtimesng.com/news/top-news/548301-premium-times-stories-shine-at-sanlam-financial-journalism-award-in-south-africa.html" target="_blank" rel="noopener">Read more &#8594;</a></div></div>
+      <div class="award-row"><span class="award-yr">2022</span><div class="award-txt">Winner, Online Category, International Organization for Migration (IOM) Reporting Migration Competition<br><a href="https://nigeria.iom.int/news/12-nigerian-journalists-awarded-quality-reporting-migration-issues" target="_blank" rel="noopener">Read more &#8594;</a></div></div>
+      <div class="award-row"><span class="award-yr">2021</span><div class="award-txt">Premium Times Reporter of the Year<br><a href="https://www.premiumtimesng.com/news/top-news/514690-premium-times-honours-reporters-at-maiden-award-ceremony.html" target="_blank" rel="noopener">Read more &#8594;</a></div></div>
+      <div class="award-row"><span class="award-yr">2021</span><div class="award-txt">Bronze Winner, Online Category, Norbert Zongo African Journalism Prize<br><a href="https://www.premiumtimesng.com/news/top-news/495242-premium-times-journalist-shines-at-african-journalism-awards.html" target="_blank" rel="noopener">Read more &#8594;</a></div></div>
+      <div class="award-row"><span class="award-yr">2020</span><div class="award-txt">Shortlist &#8212; Thomson Reuters Foundation Wealth of Nations Programme on Illicit Finance Reporting</div></div>
+
+      <div class="modal-sh">Training &amp; Fellowships</div>
+      <div class="award-row"><span class="award-yr">2026</span><div class="award-txt">Bloomberg Journalism Program</div></div>
+      <div class="award-row"><span class="award-yr">2026</span><div class="award-txt">IRE NICAR Scholarship Award</div></div>
+      <div class="award-row"><span class="award-yr">2024</span><div class="award-txt">BBC Field Producer Course</div></div>
+      <div class="award-row"><span class="award-yr">2024</span><div class="award-txt">BBC Hostile Environment and First Aid Training (HEFAT)</div></div>
+      <div class="award-row"><span class="award-yr">2023</span><div class="award-txt">BBC OSINT and Verification Training</div></div>
+      <div class="award-row"><span class="award-yr">2022</span><div class="award-txt">BBC Essential Broadcast Journalism Training 1 (EBJ)</div></div>
+      <div class="award-row"><span class="award-yr">2022</span><div class="award-txt">AFP Digital Courses</div></div>
+      <div class="award-row"><span class="award-yr">2021</span><div class="award-txt">Cohort, Friedrich-Ebert-Stiftung Open Minds Young Voices Programme</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── SCROLL RESTORE ─────────────────────────────────────────────────────
+// When you return to index.html from a subpage, scroll to where you left off
+(function () {
+  // Restore saved position
+  var saved = sessionStorage.getItem('home_scroll');
+  if (saved !== null) {
+    // Use requestAnimationFrame so layout is ready
+    requestAnimationFrame(function () {
+      window.scrollTo(0, parseInt(saved, 10));
+      sessionStorage.removeItem('home_scroll');
+    });
+  }
+  // Save position before any internal-page navigation
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a');
+    if (!a) return;
+    var href = a.getAttribute('href') || '';
+    var isInternal = href && !href.startsWith('#') && !href.startsWith('http') && !href.startsWith('//') && !href.startsWith('mailto');
+    if (isInternal) {
+      sessionStorage.setItem('home_scroll', window.scrollY);
+    }
+  });
+})();
+
+// ── HERO PHOTO PARALLAX ────────────────────────────────────────────────
+(function () {
+  var frame = document.getElementById('heroFrame');
+  var img   = document.getElementById('heroImg');
+  if (!frame || !img) return;
+  frame.addEventListener('mousemove', function (e) {
+    var r = frame.getBoundingClientRect();
+    var x = (e.clientX - r.left) / r.width  - 0.5;
+    var y = (e.clientY - r.top)  / r.height - 0.5;
+    img.style.transform = 'translate(' + (x * -14) + 'px,' + (y * -14) + 'px) scale(1.05)';
+  }, { passive: true });
+  frame.addEventListener('mouseleave', function () {
+    img.style.transform = 'translate(0,0) scale(1)';
+  }, { passive: true });
+})();
+
+// ── AWARDS MODAL ──────────────────────────────────────────────────────
+function openAwards(e) {
+  e.preventDefault();
+  document.getElementById('awardsModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeAwards() {
+  document.getElementById('awardsModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('awardsModal').addEventListener('click', function (e) {
+  if (e.target === this) closeAwards();
+});
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape') closeAwards();
+});
+</script>
+
+<!-- SHARED NAV: add this one line to every subpage to get the sticky nav -->
+<script src="nav.js"></script>
+</body>
+</html>
