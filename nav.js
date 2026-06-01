@@ -59,3 +59,4 @@
   // Insert at the very top of <body>, before the container div
   document.body.insertAdjacentHTML('afterbegin', html);
 })();
+

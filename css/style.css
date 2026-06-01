@@ -775,11 +775,6 @@ MOBILE RESPONSIVENESS
     height: 220px;
   }
 }
-<!-- =========================
-ADD THIS CSS INSIDE YOUR EXISTING <style> TAG
-DO NOT REMOVE ANYTHING
-PLACE IT BELOW YOUR CURRENT CSS
-========================= -->
 
 .story-hero{
   max-width:1200px;
