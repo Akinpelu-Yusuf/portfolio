@@ -1,522 +1,1063 @@
-```javascript
 (() => {
   "use strict";
 
-  // ── UTILITIES ──────────────────────────────────────────────────────────
+  /* ==========================================================
+     UTILITIES
+  ========================================================== */
+
   const reduceMotion =
-    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+    window.matchMedia?.("(prefers-reduced-motion: reduce)")
+      ?.matches ?? false;
 
   const isTouchDevice = () =>
-    window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+    window.matchMedia &&
+    window.matchMedia("(hover:none) and (pointer:coarse)").matches;
 
-  // ── AUTO ADD SEO / SOCIAL SHARE / FAVICON ────────────────────────────
-  // Uses the hero image as:
-  // 1. Social share thumbnail
-  // 2. Browser favicon
+
+  /* ==========================================================
+     SEO / SOCIAL / FAVICON FALLBACK
+     
+     NOTE:
+     Real OG tags should exist in HTML <head>.
+  ========================================================== */
+
   (() => {
 
     const heroImage =
-      document.querySelector("#heroImg")?.getAttribute("src") ||
-      "assets/yusuf.jpeg";
+      document.querySelector("#heroImg")
+        ?.getAttribute("src")
+      || "assets/yusuf.jpeg";
 
-    const pageTitle =
-      document.title || "Yusuf Akinpelu — Storyteller";
 
-    const pageDescription =
-      document.querySelector('meta[name="description"]')?.content ||
+    const title =
+      document.title ||
+      "Yusuf Akinpelu — Storyteller";
+
+
+    const description =
+      document.querySelector(
+        'meta[name="description"]'
+      )?.content ||
       "I find stories from places no one wants to go, tell stories no one wants to tell, and give life to data.";
 
-    const addMeta = (attr, name, content) => {
-      let tag = document.head.querySelector(`meta[${attr}="${name}"]`);
 
-      if (!tag) {
-        tag = document.createElement("meta");
-        tag.setAttribute(attr, name);
+    function addMeta(attribute, name, content){
+
+      let tag =
+        document.head.querySelector(
+          `meta[${attribute}="${name}"]`
+        );
+
+
+      if(!tag){
+
+        tag =
+          document.createElement("meta");
+
+        tag.setAttribute(
+          attribute,
+          name
+        );
+
         document.head.appendChild(tag);
       }
 
-      tag.setAttribute("content", content);
-    };
 
-    // Standard description
-    addMeta("name", "description", pageDescription);
+      tag.setAttribute(
+        "content",
+        content
+      );
 
-    // Open Graph
-    addMeta("property", "og:title", pageTitle);
-    addMeta("property", "og:description", pageDescription);
-    addMeta("property", "og:type", "website");
-    addMeta("property", "og:image", heroImage);
-    addMeta("property", "og:image:alt", "Yusuf Akinpelu");
+    }
 
-    // Twitter Card
-    addMeta("name", "twitter:card", "summary_large_image");
-    addMeta("name", "twitter:title", pageTitle);
-    addMeta("name", "twitter:description", pageDescription);
-    addMeta("name", "twitter:image", heroImage);
 
-    // Favicon
+
+    addMeta(
+      "name",
+      "description",
+      description
+    );
+
+
+    addMeta(
+      "property",
+      "og:title",
+      title
+    );
+
+
+    addMeta(
+      "property",
+      "og:description",
+      description
+    );
+
+
+    addMeta(
+      "property",
+      "og:type",
+      "website"
+    );
+
+
+    addMeta(
+      "property",
+      "og:image",
+      heroImage
+    );
+
+
+    addMeta(
+      "property",
+      "og:image:alt",
+      "Yusuf Akinpelu"
+    );
+
+
+
+    addMeta(
+      "name",
+      "twitter:card",
+      "summary_large_image"
+    );
+
+
+    addMeta(
+      "name",
+      "twitter:title",
+      title
+    );
+
+
+    addMeta(
+      "name",
+      "twitter:description",
+      description
+    );
+
+
+    addMeta(
+      "name",
+      "twitter:image",
+      heroImage
+    );
+
+
+
+    // Favicon fallback
+
     let favicon =
-      document.querySelector('link[rel="icon"]');
+      document.querySelector(
+        'link[rel="icon"]'
+      );
 
-    if (!favicon) {
-      favicon = document.createElement("link");
+
+    if(!favicon){
+
+      favicon =
+        document.createElement("link");
+
       favicon.rel = "icon";
-      document.head.appendChild(favicon);
+
+      document.head.appendChild(
+        favicon
+      );
+
     }
 
-    favicon.type = "image/jpeg";
-    favicon.href = heroImage;
 
-    // Apple touch icon
+    favicon.type =
+      "image/png";
+
+    favicon.href =
+      "assets/favicon.png";
+
+
+
+    // Apple icon
+
     let appleIcon =
-      document.querySelector('link[rel="apple-touch-icon"]');
+      document.querySelector(
+        'link[rel="apple-touch-icon"]'
+      );
 
-    if (!appleIcon) {
-      appleIcon = document.createElement("link");
-      appleIcon.rel = "apple-touch-icon";
-      document.head.appendChild(appleIcon);
+
+    if(!appleIcon){
+
+      appleIcon =
+        document.createElement("link");
+
+      appleIcon.rel =
+        "apple-touch-icon";
+
+      document.head.appendChild(
+        appleIcon
+      );
+
     }
 
-    appleIcon.href = heroImage;
+
+    appleIcon.href =
+      "assets/favicon.png";
+
 
   })();
 
-  // ── PARALLAX HERO ──────────────────────────────────────────────────────
-  // Mouse parallax on desktop; gyroscope tilt on mobile (if permitted)
-  const heroes = document.querySelectorAll(".hero");
 
-  if (!reduceMotion && heroes.length) {
 
-    // Desktop: mouse-move parallax
-    heroes.forEach((hero) => {
-      hero.addEventListener("mousemove", (e) => {
-        if (isTouchDevice()) return;
+  /* ==========================================================
+     HERO PARALLAX
+  ========================================================== */
 
-        const { left, top, width, height } =
-          hero.getBoundingClientRect();
 
-        const x =
-          Math.min(Math.max((e.clientX - left) / width, 0), 1);
+  const heroes =
+    document.querySelectorAll(
+      ".hero"
+    );
 
-        const y =
-          Math.min(Math.max((e.clientY - top) / height, 0), 1);
 
-        hero.style.setProperty(
-          "--hero-bg-x",
-          `${50 + (x - 0.5) * 8}%`
-        );
+  if(
+    !reduceMotion &&
+    heroes.length
+  ){
 
-        hero.style.setProperty(
-          "--hero-bg-y",
-          `${50 + (y - 0.5) * 8}%`
-        );
 
-      }, { passive: true });
+    heroes.forEach(hero => {
 
-      hero.addEventListener("mouseleave", () => {
 
-        hero.style.setProperty("--hero-bg-x", "50%");
-        hero.style.setProperty("--hero-bg-y", "50%");
+      hero.addEventListener(
+        "mousemove",
+        e => {
 
-      }, { passive: true });
+
+          if(isTouchDevice())
+            return;
+
+
+
+          const rect =
+            hero.getBoundingClientRect();
+
+
+
+          const x =
+            (
+              (e.clientX - rect.left)
+              /
+              rect.width
+            );
+
+
+          const y =
+            (
+              (e.clientY - rect.top)
+              /
+              rect.height
+            );
+
+
+
+          hero.style.setProperty(
+            "--hero-bg-x",
+            `${50 + (x-.5)*8}%`
+          );
+
+
+          hero.style.setProperty(
+            "--hero-bg-y",
+            `${50 + (y-.5)*8}%`
+          );
+
+
+        },
+        {
+          passive:true
+        }
+      );
+
+
+
+      hero.addEventListener(
+        "mouseleave",
+        ()=>{
+
+          hero.style.setProperty(
+            "--hero-bg-x",
+            "50%"
+          );
+
+
+          hero.style.setProperty(
+            "--hero-bg-y",
+            "50%"
+          );
+
+        }
+      );
+
+
     });
 
-    // Mobile: subtle gyroscope tilt
-    if (
+
+
+    // Mobile gyroscope
+
+    if(
       isTouchDevice() &&
       typeof DeviceOrientationEvent !== "undefined"
-    ) {
+    ){
 
-      const requestGyro = () => {
 
-        if (
+      const attachGyro = ()=>{
+
+
+        window.addEventListener(
+          "deviceorientation",
+          e=>{
+
+
+            const x =
+              Math.min(
+                Math.max(
+                  (e.gamma || 0)/45,
+                  -1
+                ),
+                1
+              );
+
+
+            const y =
+              Math.min(
+                Math.max(
+                  (e.beta || 0)/90,
+                  -1
+                ),
+                1
+              );
+
+
+
+            heroes.forEach(hero=>{
+
+
+              hero.style.setProperty(
+                "--hero-bg-x",
+                `${50+x*4}%`
+              );
+
+
+              hero.style.setProperty(
+                "--hero-bg-y",
+                `${50+y*4}%`
+              );
+
+
+            });
+
+
+          },
+          {
+            passive:true
+          }
+        );
+
+      };
+
+
+
+      const requestGyro = ()=>{
+
+
+        if(
           typeof DeviceOrientationEvent.requestPermission ===
           "function"
-        ) {
+        ){
 
-          DeviceOrientationEvent.requestPermission()
-            .then((state) => {
 
-              if (state === "granted") {
+          DeviceOrientationEvent
+            .requestPermission()
+            .then(permission=>{
+
+              if(
+                permission==="granted"
+              ){
+
                 attachGyro();
+
               }
 
             })
-            .catch(() => {});
+            .catch(()=>{});
+
 
         } else {
 
           attachGyro();
 
         }
+
       };
 
-      const attachGyro = () => {
 
-        window.addEventListener(
-          "deviceorientation",
-          (e) => {
-
-            const x =
-              Math.min(
-                Math.max((e.gamma ?? 0) / 45, -1),
-                1
-              );
-
-            const y =
-              Math.min(
-                Math.max((e.beta ?? 0) / 90, -1),
-                1
-              );
-
-            heroes.forEach((hero) => {
-
-              hero.style.setProperty(
-                "--hero-bg-x",
-                `${50 + x * 4}%`
-              );
-
-              hero.style.setProperty(
-                "--hero-bg-y",
-                `${50 + y * 4}%`
-              );
-
-            });
-
-          },
-          { passive: true }
-        );
-      };
 
       document.addEventListener(
-        "touchstart",
+        "click",
         requestGyro,
         {
-          once: true,
-          passive: true
+          once:true
         }
       );
-    }
-  }
 
-  // ── MOBILE NAV TOGGLE ──────────────────────────────────────────────────
+
+    }
+
+  }
+  /* ==========================================================
+     MOBILE NAVIGATION
+  ========================================================== */
+
+
   const mobileToggle =
-    document.querySelector(".mobile-nav-toggle");
+    document.querySelector(
+      ".mobile-nav-toggle"
+    );
+
 
   const navList =
-    document.querySelector(".site-subnav__list");
+    document.querySelector(
+      ".site-subnav__list"
+    );
 
-  if (mobileToggle && navList) {
 
-    const openNav = () => {
 
-      navList.classList.add("active");
+  if(
+    mobileToggle &&
+    navList
+  ){
+
+
+    const openNav = ()=>{
+
+
+      navList.classList.add(
+        "active"
+      );
+
 
       mobileToggle.setAttribute(
         "aria-expanded",
         "true"
       );
+
 
       mobileToggle.setAttribute(
         "aria-label",
         "Close navigation"
       );
 
-      document.body.style.overflow = "hidden";
+
+      document.body.style.overflow =
+        "hidden";
+
     };
 
-    const closeNav = () => {
 
-      navList.classList.remove("active");
+
+    const closeNav = ()=>{
+
+
+      navList.classList.remove(
+        "active"
+      );
+
 
       mobileToggle.setAttribute(
         "aria-expanded",
         "false"
       );
+
 
       mobileToggle.setAttribute(
         "aria-label",
         "Open navigation"
       );
 
-      document.body.style.overflow = "";
+
+      document.body.style.overflow =
+        "";
+
     };
 
-    const isNavOpen = () =>
-      navList.classList.contains("active");
 
-    mobileToggle.addEventListener("click", () => {
 
-      isNavOpen()
-        ? closeNav()
-        : openNav();
+    const navIsOpen = ()=>{
 
-    });
+      return navList.classList.contains(
+        "active"
+      );
 
-    // Close on Escape key
-    document.addEventListener("keydown", (e) => {
+    };
 
-      if (
-        e.key === "Escape" &&
-        isNavOpen()
-      ) {
 
-        closeNav();
-        mobileToggle.focus();
 
-      }
-    });
+    mobileToggle.addEventListener(
+      "click",
+      e=>{
 
-    // Close when clicking outside the nav
-    document.addEventListener("click", (e) => {
+        e.stopPropagation();
 
-      if (
-        isNavOpen() &&
-        !navList.contains(e.target) &&
-        !mobileToggle.contains(e.target)
-      ) {
 
-        closeNav();
+        navIsOpen()
+          ?
+          closeNav()
+          :
+          openNav();
 
       }
-    });
+    );
 
-    // Close nav on desktop resize
-    window.addEventListener(
-      "resize",
-      () => {
 
-        if (
-          window.innerWidth >= 992 &&
-          isNavOpen()
-        ) {
+
+    document.addEventListener(
+      "keydown",
+      e=>{
+
+
+        if(
+          e.key==="Escape" &&
+          navIsOpen()
+        ){
+
+          closeNav();
+
+          mobileToggle.focus();
+
+        }
+
+      }
+    );
+
+
+
+    document.addEventListener(
+      "click",
+      e=>{
+
+
+        if(
+          navIsOpen() &&
+          !navList.contains(e.target) &&
+          !mobileToggle.contains(e.target)
+        ){
 
           closeNav();
 
         }
-      },
-      { passive: true }
+
+      }
     );
+
+
+
   }
 
-  // ── MOBILE DROPDOWN ───────────────────────────────────────────────────
-  const dropdowns = document.querySelectorAll(
-    ".nav-links li.dropdown, .dropdown:not(li)"
-  );
 
-  dropdowns.forEach((dropdown) => {
+
+
+  /* ==========================================================
+     MOBILE DROPDOWNS
+  ========================================================== */
+
+
+  const dropdowns =
+    document.querySelectorAll(
+      ".site-subnav__list .dropdown, .nav-links .dropdown"
+    );
+
+
+
+  dropdowns.forEach(dropdown=>{
+
 
     const toggle =
-      dropdown.querySelector(".dropdown-toggle");
+      dropdown.querySelector(
+        ".dropdown-toggle"
+      );
 
-    if (!toggle) return;
 
     const menu =
-      dropdown.querySelector(".dropdown-menu");
+      dropdown.querySelector(
+        ".dropdown-menu"
+      );
 
-    const isOpen = () =>
-      dropdown.classList.contains("active");
 
-    const openDropdown = () => {
 
-      dropdown.classList.add("active");
+    if(!toggle)
+      return;
+
+
+
+    toggle.setAttribute(
+      "aria-expanded",
+      "false"
+    );
+
+
+
+    const openDropdown = ()=>{
+
+
+      dropdown.classList.add(
+        "active"
+      );
+
 
       toggle.setAttribute(
         "aria-expanded",
         "true"
       );
 
-      if (menu) {
+
+
+      if(menu){
+
         menu.style.maxHeight =
           menu.scrollHeight + "px";
+
       }
+
     };
 
-    const closeDropdown = () => {
 
-      dropdown.classList.remove("active");
+
+    const closeDropdown = ()=>{
+
+
+      dropdown.classList.remove(
+        "active"
+      );
+
 
       toggle.setAttribute(
         "aria-expanded",
         "false"
       );
 
-      if (menu) {
-        menu.style.maxHeight = "0";
+
+
+      if(menu){
+
+        menu.style.maxHeight =
+          "0";
+
       }
+
     };
 
-    toggle.addEventListener("click", (e) => {
 
-      if (window.innerWidth < 992) {
 
-        e.preventDefault();
+    toggle.addEventListener(
+      "click",
+      e=>{
 
-        isOpen()
-          ? closeDropdown()
-          : openDropdown();
 
-      }
-    });
+        if(
+          window.innerWidth < 992
+        ){
 
-    // Close on Escape
-    dropdown.addEventListener("keydown", (e) => {
+          e.preventDefault();
 
-      if (
-        e.key === "Escape" &&
-        isOpen()
-      ) {
+          e.stopPropagation();
 
-        closeDropdown();
-        toggle.focus();
 
-      }
-    });
 
-    // Close when clicking outside
-    document.addEventListener("click", (e) => {
+          dropdown.classList.contains(
+            "active"
+          )
+            ?
+            closeDropdown()
+            :
+            openDropdown();
 
-      if (
-        isOpen() &&
-        !dropdown.contains(e.target)
-      ) {
+        }
 
-        closeDropdown();
 
       }
-    });
+    );
 
-    // Reset on resize
-    window.addEventListener(
-      "resize",
-      () => {
 
-        if (window.innerWidth >= 992) {
+
+    document.addEventListener(
+      "click",
+      e=>{
+
+
+        if(
+          dropdown.classList.contains(
+            "active"
+          ) &&
+          !dropdown.contains(e.target)
+        ){
 
           closeDropdown();
 
-          if (menu) {
-            menu.style.maxHeight = "";
-          }
         }
-      },
-      { passive: true }
-    );
-  });
-
-  // ── SMOOTH SCROLL ─────────────────────────────────────────────────────
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-
-    anchor.addEventListener("click", (e) => {
-
-      const id =
-        anchor.getAttribute("href").slice(1);
-
-      const target =
-        document.getElementById(id);
-
-      if (!target) return;
-
-      e.preventDefault();
-
-      target.scrollIntoView({
-        behavior: reduceMotion
-          ? "auto"
-          : "smooth",
-        block: "start"
-      });
-
-      history.pushState(
-        null,
-        "",
-        `#${id}`
-      );
-    });
-  });
-
-  // ── SCROLL RESTORE ────────────────────────────────────────────────────
-  if (
-    window.location.pathname.endsWith("index.html") ||
-    window.location.pathname === "/"
-  ) {
-
-    const saved =
-      sessionStorage.getItem("home_scroll");
-
-    if (saved !== null) {
-
-      requestAnimationFrame(() => {
-
-        window.scrollTo({
-          top: parseInt(saved, 10),
-          behavior: "instant"
-        });
-
-        sessionStorage.removeItem("home_scroll");
-
-      });
-    }
-
-    document.addEventListener("click", (e) => {
-
-      const a = e.target.closest("a");
-
-      if (!a) return;
-
-      const href =
-        a.getAttribute("href") || "";
-
-      const isInternal =
-        href &&
-        !href.startsWith("#") &&
-        !href.startsWith("http") &&
-        !href.startsWith("//") &&
-        !href.startsWith("mailto");
-
-      if (isInternal) {
-
-        sessionStorage.setItem(
-          "home_scroll",
-          String(window.scrollY)
-        );
 
       }
+    );
+
+
+
+    dropdown.addEventListener(
+      "keydown",
+      e=>{
+
+
+        if(
+          e.key==="Escape" &&
+          dropdown.classList.contains(
+            "active"
+          )
+        ){
+
+          closeDropdown();
+
+          toggle.focus();
+
+        }
+
+
+      }
+    );
+
+
+  });
+
+
+
+
+
+
+  /* ==========================================================
+     SMOOTH SCROLL
+  ========================================================== */
+
+
+  document
+    .querySelectorAll(
+      'a[href^="#"]'
+    )
+    .forEach(anchor=>{
+
+
+      anchor.addEventListener(
+        "click",
+        e=>{
+
+
+          const id =
+            anchor
+            .getAttribute("href")
+            .slice(1);
+
+
+
+          if(!id)
+            return;
+
+
+
+          const target =
+            document.getElementById(
+              id
+            );
+
+
+
+          if(!target)
+            return;
+
+
+
+          e.preventDefault();
+
+
+
+          target.scrollIntoView({
+
+            behavior:
+              reduceMotion
+              ?
+              "auto"
+              :
+              "smooth",
+
+            block:"start"
+
+          });
+
+
+
+          history.replaceState(
+            null,
+            "",
+            `#${id}`
+          );
+
+
+        }
+      );
+
+
     });
+
+
+
+
+
+
+  /* ==========================================================
+     RESTORE HOME SCROLL POSITION
+  ========================================================== */
+
+
+  const isHomePage =
+    window.location.pathname === "/" ||
+    window.location.pathname.endsWith(
+      "index.html"
+    );
+
+
+
+  if(isHomePage){
+
+
+    const savedPosition =
+      sessionStorage.getItem(
+        "home_scroll"
+      );
+
+
+
+    if(savedPosition){
+
+
+      requestAnimationFrame(()=>{
+
+
+        window.scrollTo(
+          0,
+          Number(savedPosition)
+        );
+
+
+        sessionStorage.removeItem(
+          "home_scroll"
+        );
+
+
+      });
+
+
+    }
+
+
+
+
+    document.addEventListener(
+      "click",
+      e=>{
+
+
+        const link =
+          e.target.closest(
+            "a"
+          );
+
+
+
+        if(!link)
+          return;
+
+
+
+        const href =
+          link.getAttribute(
+            "href"
+          )
+          ||
+          "";
+
+
+
+        const internalLink =
+          href &&
+          !href.startsWith("#") &&
+          !href.startsWith("http") &&
+          !href.startsWith("//") &&
+          !href.startsWith("mailto:");
+
+
+
+        if(internalLink){
+
+
+          sessionStorage.setItem(
+            "home_scroll",
+            String(
+              window.scrollY
+            )
+          );
+
+
+        }
+
+
+      }
+    );
+
+
   }
 
-  // ── ACTIVE NAV LINK ───────────────────────────────────────────────────
+
+
+
+
+  /* ==========================================================
+     ACTIVE NAV LINK
+  ========================================================== */
+
+
   const currentPath =
-    window.location.pathname.split("/").pop() ||
-    "index.html";
+    window.location.pathname
+      .split("/")
+      .pop()
+      ||
+      "index.html";
+
+
 
   document
     .querySelectorAll(
       ".nav-links a, .site-subnav__link"
     )
-    .forEach((link) => {
+    .forEach(link=>{
+
+
+      const href =
+        link
+        .getAttribute("href")
+        ||
+        "";
+
+
 
       const linkPath =
-        (link.getAttribute("href") || "")
-          .split("/")
-          .pop()
-          .split("#")[0];
+        href
+        .split("/")
+        .pop()
+        .split("#")[0];
 
-      if (
+
+
+      if(
         linkPath &&
-        linkPath === currentPath
-      ) {
+        linkPath===currentPath
+      ){
+
 
         link.setAttribute(
           "aria-current",
           "page"
         );
 
-        link.style.opacity = "1";
+
+
+        link.style.opacity =
+          "1";
+
+
 
         link.style.borderBottom =
           "2px solid var(--accent, #5a3935)";
+
+
       }
+
+
     });
 
+
+
+
+
+
+  /* ==========================================================
+     RESIZE CLEANUP
+  ========================================================== */
+
+
+  let resizeTimer;
+
+
+  window.addEventListener(
+    "resize",
+    ()=>{
+
+
+      clearTimeout(
+        resizeTimer
+      );
+
+
+
+      resizeTimer =
+        setTimeout(()=>{
+
+
+          if(
+            window.innerWidth >= 992
+          ){
+
+
+            document
+              .querySelectorAll(
+                ".dropdown.active"
+              )
+              .forEach(item=>{
+
+
+                item.classList.remove(
+                  "active"
+                );
+
+
+                const menu =
+                  item.querySelector(
+                    ".dropdown-menu"
+                  );
+
+
+                if(menu){
+
+                  menu.style.maxHeight =
+                    "";
+
+                }
+
+
+              });
+
+
+          }
+
+
+        },200);
+
+
+    }
+  );
+
+
+
 })();
-```
